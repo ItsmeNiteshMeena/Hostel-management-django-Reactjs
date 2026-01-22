@@ -5,26 +5,36 @@ export default function Rooms() {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    API.get("rooms/")
-      .then(res => setRooms(res.data))
-      .catch(err => console.log(err));
+    API.get("rooms/").then(res => setRooms(res.data));
   }, []);
+
+  const statusColor = status => {
+    if (status === "available") return "success";
+    if (status === "allotted") return "danger";
+    if (status === "cleaned") return "primary";
+    return "warning";
+  };
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Available Rooms</h2>
+      <h2 className="mb-4" data-aos="fade-right">Rooms</h2>
 
       <div className="row">
         {rooms.map(room => (
-          <div className="col-md-4 mb-3" key={room.id}>
-            <div className="card shadow-sm">
+          <div className="col-md-4 mb-3" key={room.id} data-aos="zoom-in">
+            <div className="card shadow">
+              <img
+                src="https://images.unsplash.com/photo-1590490360182-c33d57733427"
+                className="card-img-top"
+                alt="room"
+              />
               <div className="card-body">
-                <h5 className="card-title">Room {room.room_number}</h5>
-                <p className="card-text">Capacity: {room.capacity}</p>
-                <p className="card-text">Occupied: {room.occupied}</p>
-                <p className={`badge ${room.occupied < room.capacity ? 'bg-success' : 'bg-danger'}`}>
-                  {room.occupied < room.capacity ? "Available" : "Full"}
-                </p>
+                <h5>Room {room.room_number}</h5>
+                <p>Type: {room.room_type}</p>
+                <p>₹{room.price}/month</p>
+                <span className={`badge bg-${statusColor(room.status)}`}>
+                  {room.status}
+                </span>
               </div>
             </div>
           </div>

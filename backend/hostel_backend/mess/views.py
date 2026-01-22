@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
-from .models import MessMenu
-from .serializers import MessMenuSerializer
+from .models import MessItem
+from .serializers import MessItemSerializer
 
 class MessMenuViewSet(ModelViewSet):
-    queryset = MessMenu.objects.all()
-    serializer_class = MessMenuSerializer
+    queryset = MessItem.objects.all()
+    serializer_class = MessItemSerializer

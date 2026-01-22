@@ -1,10 +1,17 @@
 from django.db import models
 
-class MessMenu(models.Model):
-    day = models.CharField(max_length=10)
-    breakfast = models.CharField(max_length=100)
-    lunch = models.CharField(max_length=100)
-    dinner = models.CharField(max_length=100)
+class MessItem(models.Model):
+
+    MEAL_TYPE = (
+        ('breakfast', 'Breakfast'),
+        ('lunch', 'Lunch'),
+        ('dinner', 'Dinner'),
+    )
+
+    meal_type = models.CharField(max_length=10, choices=MEAL_TYPE)
+    name = models.CharField(max_length=100)
+    price = models.IntegerField()
 
     def __str__(self):
-        return self.day
+        return f"{self.meal_type} - {self.name}"
+

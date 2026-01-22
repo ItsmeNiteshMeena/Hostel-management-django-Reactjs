@@ -2,26 +2,30 @@ import { useEffect, useState } from "react";
 import API from "../api";
 
 export default function Mess() {
-  const [menu, setMenu] = useState([]);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
-    API.get("mess/")
-      .then(res => setMenu(res.data))
-      .catch(err => console.log(err));
+    API.get("mess/").then(res => setItems(res.data));
   }, []);
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Weekly Mess Menu</h2>
+      <h2 data-aos="fade-left">Mess Menu</h2>
 
-      {menu.map(item => (
-        <div className="card mb-3 shadow-sm" key={item.id}>
-          <div className="card-body">
-            <h5 className="card-title">{item.day}</h5>
-            <p>🍳 <strong>Breakfast:</strong> {item.breakfast}</p>
-            <p>🍛 <strong>Lunch:</strong> {item.lunch}</p>
-            <p>🍽 <strong>Dinner:</strong> {item.dinner}</p>
-          </div>
+      {["breakfast", "lunch", "dinner"].map(meal => (
+        <div key={meal} className="mt-4" data-aos="fade-up">
+          <h4 className="text-capitalize">{meal}</h4>
+
+          {items
+            .filter(i => i.meal_type === meal)
+            .map(item => (
+              <div className="card mb-2 shadow-sm" key={item.id}>
+                <div className="card-body d-flex justify-content-between">
+                  <span>{item.name}</span>
+                  <span>₹{item.price}</span>
+                </div>
+              </div>
+            ))}
         </div>
       ))}
     </div>

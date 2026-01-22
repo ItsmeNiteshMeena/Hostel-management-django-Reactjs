@@ -1,9 +1,23 @@
 from django.db import models
 
 class Room(models.Model):
-    room_number = models.CharField(max_length=10)
-    capacity = models.IntegerField()
-    occupied = models.IntegerField(default=0)
+
+    ROOM_TYPE = (
+        ('single', 'Single'),
+        ('double', 'Double'),
+    )
+
+    ROOM_STATUS = (
+        ('available', 'Available'),
+        ('allotted', 'Allotted'),
+        ('cleaned', 'Cleaned'),
+        ('dirty', 'Dirty'),
+    )
+
+    room_number = models.CharField(max_length=10, unique=True)
+    room_type = models.CharField(max_length=10, choices=ROOM_TYPE)
+    price = models.IntegerField()
+    status = models.CharField(max_length=10, choices=ROOM_STATUS, default='available')
 
     def __str__(self):
-        return self.room_number
+        return f"{self.room_number} ({self.room_type})"
