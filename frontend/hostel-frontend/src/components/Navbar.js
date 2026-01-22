@@ -9,11 +9,17 @@ export default function Navbar() {
         <div>
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/">Rooms</Link>
+              <Link className="nav-link" to="/rooms">Rooms</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/mess">Mess</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link text-warning" to="/admin/rooms">
+                 Admin Panel
+               </Link>
+             </li>
+
           </ul>
         </div>
       </div>

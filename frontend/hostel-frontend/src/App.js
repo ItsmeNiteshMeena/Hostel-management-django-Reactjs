@@ -6,6 +6,8 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Rooms from "./pages/Rooms";
 import Mess from "./pages/Mess";
+import AdminRooms from "./pages/AdminRooms";
+
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/mess" element={<Mess />} />
+        <Route path="/admin/rooms" element={<AdminRooms />} />
+
       </Routes>
     </>
   );
