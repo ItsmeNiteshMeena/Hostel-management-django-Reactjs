@@ -27,5 +27,6 @@ router.register('mess', MessMenuViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/rooms/', include('rooms.urls')),
 ]
 
