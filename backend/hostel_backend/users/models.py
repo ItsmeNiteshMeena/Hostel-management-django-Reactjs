@@ -1,7 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from rooms.models import Room
 from django.conf import settings
+
+
 
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -27,7 +28,7 @@ class StudentProfile(models.Model):
         on_delete=models.CASCADE
     )
     room = models.OneToOneField(
-        Room,
+        'rooms.Room',
         on_delete=models.SET_NULL,
         null=True,
         blank=True

@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+
 
 class Room(models.Model):
 
@@ -21,3 +23,16 @@ class Room(models.Model):
 
     def __str__(self):
         return f"{self.room_number} ({self.room_type})"
+
+
+class RoomAllotment(models.Model):
+    student = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        limit_choices_to={'role': 'student'}
+    )
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    allotment_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student} → {self.room}"
