@@ -1,9 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'aos/dist/aos.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import 'animate.css';
+
 
 import { BrowserRouter } from 'react-router-dom';
 

@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from users.models import StudentProfile
+from rest_framework.permissions import IsAuthenticated
 
 class RoomViewSet(ModelViewSet):
     queryset = Room.objects.all()
@@ -73,7 +74,7 @@ class AllottedStudentsListAPIView(ListAPIView):
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from .models import Room, RoomAllotment
 from .serializers import RoomSerializer, AllottedStudentSerializer
 
@@ -140,3 +141,74 @@ class VacateRoomAPIView(APIView):
             "room_number": room.room_number,
             "new_status": room.status
         })
+
+
+class StudentRoomAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            allotment = RoomAllotment.objects.select_related('room').get(student=request.user)
+
+            return Response({
+                "student": request.user.username,
+                "room_number": allotment.room.room_number,
+                "room_type": allotment.room.room_type,
+                "price": allotment.room.price,
+                "room_status": allotment.room.status,
+                "allotment_date": allotment.allotment_date
+            })
+
+        except RoomAllotment.DoesNotExist:
+            return Response({
+                "message": "No room allotted yet"
+            }, status=404)
+
+from rest_framework.permissions import IsAdminUser
+from django.db.models import Count, Sum
+from django.contrib.auth.models import User
+
+class AdminDashboardStatsAPIView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        total_rooms = Room.objects.count()
+        available_rooms = Room.objects.filter(status='available').count()
+        allotted_rooms = Room.objects.filter(status='allotted').count()
+        dirty_rooms = Room.objects.filter(status='dirty').count()
+
+        total_students_allotted = RoomAllotment.objects.count()
+
+        total_revenue = Room.objects.filter(status='allotted').aggregate(
+            total=Sum('price')
+        )['total'] or 0
+
+        return Response({
+            "total_rooms": total_rooms,
+            "available_rooms": available_rooms,
+            "allotted_rooms": allotted_rooms,
+            "dirty_rooms": dirty_rooms,
+            "total_students_allotted": total_students_allotted,
+            "monthly_revenue": total_revenue
+        })
+
+from rest_framework import generics
+from django.contrib.auth.models import User
+from rest_framework.serializers import ModelSerializer
+from rest_framework.permissions import AllowAny
+
+class StudentRegisterSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
+
+User = get_user_model()
+class StudentRegisterAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = StudentRegisterSerializer
+    permission_classes = [AllowAny]
