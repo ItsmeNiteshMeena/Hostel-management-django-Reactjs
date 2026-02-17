@@ -11,8 +11,11 @@ function Login() {
     e.preventDefault();
     const res = await axios.post("http://127.0.0.1:8000/api/login/", form);
 
+    // localStorage.setItem("access", res.data.access);
+    // alert("Login Successful!");
     localStorage.setItem("access", res.data.access);
-    alert("Login Successful!");
+    window.location.href = "/dashboard";
+
   };
 
   return (

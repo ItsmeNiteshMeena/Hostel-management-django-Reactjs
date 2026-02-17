@@ -1,20 +1,23 @@
-export default function Home() {
+import React from "react";
+
+function Home() {
   return (
-    <div className="container mt-5">
-      <div
-        className="p-5 text-white rounded"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1560448075-bb4f94f42c9c')",
-          backgroundSize: "cover",
-        }}
-        data-aos="fade-up"
-      >
-        <h1 className="display-5 fw-bold">Hostel Management System</h1>
-        <p className="fs-4">
-          Smart room allotment & mess management
-        </p>
-      </div>
+    <div className="container text-center mt-5">
+      <h1 className="fw-bold animate__animated animate__fadeInDown">
+        Welcome to Hostel Management System
+      </h1>
+      <p className="mt-3 text-muted">
+        Manage Rooms, Mess & Students Efficiently 🚀
+      </p>
+
+      <img
+        src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5"
+        alt="Hostel"
+        className="img-fluid mt-4 rounded shadow"
+        style={{ maxHeight: "400px" }}
+      />
     </div>
   );
 }
+
+export default Home;
